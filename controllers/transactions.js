@@ -7,7 +7,7 @@ const transactions = require('../models/transactions');
 **************************************************************************/
 
 /*
- *
+ * Export method for GET request available to Express Router.
  */
 exports.get = function (request, response) {
 	transactions.get(1, (err, data) => {
@@ -20,7 +20,7 @@ exports.get = function (request, response) {
 };
 
 /*
- *
+ * Export method for POST request available to Express Router.
  */
 exports.post = function (request, response) {
 	let body = request.body;

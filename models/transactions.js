@@ -10,7 +10,13 @@ const MongoClient = require('../MongoClient');
 *************************************************************************/
 
 /*
+ * Method to group transactions by company name.
  *
+ * To-Do: Efficient regex/way to extract company name from transaction name.
+ *
+ * input: list of transactions.
+ * output: JSON object with key being company name and value being list of 
+ *         transactions related to that company.
  */
 var mapRows = function (data) {
 	let result = {};
@@ -29,7 +35,10 @@ var mapRows = function (data) {
 }
 
 /*
+ * Method to verify whether an amount is in allowed band.
  *
+ * input: two real numbers.
+ * output:  boolean indicating whether the two amounts are recurring or not.
  */
 var isInAmountBand = function (a1, a2) {
 
@@ -48,12 +57,18 @@ var isInAmountBand = function (a1, a2) {
 }
 
 /*
- *
+ * Helper Method.
  */
 var isAmountRecurring = function (a1, a2) {
 	return isInAmountBand(a1, a2);
 }
 
+/*
+ * Method to find recurring transactions based on amount.
+ * 
+ * input: list of transactions of a company.
+ * output: set of recurrring transactions for a company.
+ */
 var findAmountRecurringTransactions = function (transactions) {
 	let amountRecurringTransactions = new Set();
 
@@ -71,7 +86,10 @@ var findAmountRecurringTransactions = function (transactions) {
 }
 
 /*
- *
+ * Method to get difference between consecutive transactions based on date.
+ * 
+ * input: list of transactions.
+ * output: difference array of dates in number of days.
  */
 var getDateDiffArray = function (transactions) {
 	let diffArray = new Array();
@@ -87,7 +105,10 @@ var getDateDiffArray = function (transactions) {
 }
 
 /*
+ * Method to verify whether two dates are in allowed band or nor.
  *
+ * input: two dates.
+ * output: boolean indicating whether the dates are recurring or not.
  */
 var isInDateBand = function (d1, d2) {
 	let dateBand = config.get('rt_rules.date');
@@ -100,14 +121,17 @@ var isInDateBand = function (d1, d2) {
 }
 
 /*
- *
+ * Helper method.
  */
 var isDateRecurring = function (d1, d2) {
 	return isInDateBand(d1, d2);
 }
 
 /*
+ * Method to find recurring transactions based on transaction date.
  *
+ * input: list of transactions.
+ * output: list of recurring transactions based on date.
  */
 var findDateRecurringTransactions = function (transactions) {
 	let dateRecurringTransactions = new Set();
@@ -129,7 +153,10 @@ var findDateRecurringTransactions = function (transactions) {
 }
 
 /*
- *
+ * Method to return union of two sets.
+ * 
+ * input: two sets.
+ * output: set.
  */
 var union = function (setA, setB) {
     let _union = new Set(setA);
@@ -140,7 +167,10 @@ var union = function (setA, setB) {
 }
 
 /*
+ * Helper method to find all recurring transactions for a company.
  *
+ * input: list of transactions.
+ * output: set of recurring transactions.
  */
 var findRecurringTransactionsHelper = function (transactions) {
 	let dateBand = config.get('rt_rules.date');
@@ -155,7 +185,10 @@ var findRecurringTransactionsHelper = function (transactions) {
 }
 
 /*
+ * Helper method to find recurring transactions for all companies for a user.
  *
+ * input: JSON mapped of all companies and transactions list for a user.
+ * output: JSON mapped of all companies and recurring transactions list for a user.
  */
 var findRecurringTransactions = function (mappedRows) {
 	let result = {};
@@ -169,7 +202,10 @@ var findRecurringTransactions = function (mappedRows) {
 }
 
 /*
+ * Method to give list of transactions given mapped object.
  *
+ * input: JSON mapped of all companies and recurring transactions list for a user.
+ * output: list of recurring transactions for a user.
  */
 var unMap = function (data) {
 	let result = new Array();
@@ -183,7 +219,10 @@ var unMap = function (data) {
 }
 
 /*
+ * Method to add number of days to a date.
  *
+ * input: date object, integer.
+ * ouput: updated date object.
  */
 var addDays = function (date, days) {
 	let result = new Date(date);
@@ -192,7 +231,10 @@ var addDays = function (date, days) {
 }
 
 /*
+ * Method to get estimate for next recurring transaction post date.
  *
+ * input: list of recurring transactions for a company.
+ * output: date object.
  */
 var getNextDateEstimate = function (transactions) {
 	let total = 0;
@@ -209,14 +251,17 @@ var getNextDateEstimate = function (transactions) {
 }
 
 /*
- *
+ * Helper method.
  */
 var getNextAmountEstimate = function (transactions) {
 	return transactions[0].amount;
 }
 
 /*
+ * Method to get list of transaction amounts.
  *
+ * input: list of transactions.
+ * output: list of amounts of each transaction.
  */
 var getTransactionsList = function (transactions) {
 	let array = new Array();
@@ -228,7 +273,10 @@ var getTransactionsList = function (transactions) {
 }
 
 /*
+ * Method to get next date and amount estimate for a recurring transaction.
  *
+ * input: list of transactions.
+ * output: JSON object with date and amount estimate.
  */
 var getNextEstimate = function (transactions) {
 	let o = {};
@@ -239,7 +287,10 @@ var getNextEstimate = function (transactions) {
 }
 
 /*
+ * Helper method to build response object.
  *
+ * input: JSON mapped of all companies and recurring transactions list for a user.
+ * ouput: list of recurring transactions as per problem statement.
  */
 var buildResponse = function (data) {
 	let result = new Array();
@@ -259,7 +310,7 @@ var buildResponse = function (data) {
 *************************************************************************/
 
 /*
- *
+ * DB method to update transaction.
  */
 var updateDB = function (record, cb) {
 	const db = MongoClient.db(config.get('dbConfig.dbName'));
@@ -275,7 +326,7 @@ var updateDB = function (record, cb) {
 }
 
 /*
- *
+ * DB method to get all transactions for a user.
  */
 var getRecurringTransactions = function (userId, cb) {
 
@@ -326,7 +377,7 @@ var getRecurringTransactions = function (userId, cb) {
 };
 
 /*
- *
+ * DB method to insert new transactions into the db.
  */
 var upsertTransactions = function (data, cb) {
 	MongoClient.connect((err) => {
@@ -352,7 +403,8 @@ var upsertTransactions = function (data, cb) {
 *************************************************************************/
 
 /*
- *
+ * Export method to get recurring transactions for a user.
+ * Accessible from transactions controller.
  */
 exports.get = function (userId, cb) {
 	getRecurringTransactions(userId, function (err, res) {
@@ -367,7 +419,8 @@ exports.get = function (userId, cb) {
 }
 
 /*
- *
+ * Export method to post new transactions to the db for a user.
+ * Accessible from transactions controller.
  */
 exports.post = function (data, cb) {
 	upsertTransactions(data, function (err, res) {

@@ -1,0 +1,35 @@
+{
+  "name": "clerkie.io",
+  "version": "1.0.0",
+  "description": "Coding challenge for Backend Engineer.",
+  "main": "app.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rammurthym/clerkie.io.git"
+  },
+  "keywords": [
+    "NodeJS",
+    "MongoDB",
+    "ExpressJS"
+  ],
+  "author": "Rammurthy Mudimadugula",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rammurthym/clerkie.io/issues"
+  },
+  "homepage": "https://github.com/rammurthym/clerkie.io#readme",
+  "dependencies": {
+    "async": "^2.6.1",
+    "body-parser": "^1.18.3",
+    "config": "^2.0.1",
+    "connect-timeout": "^1.9.0",
+    "date-diff": "^0.2.1",
+    "express": "^4.16.4",
+    "mongodb": "^3.1.8",
+    "underscore": "^1.9.1",
+    "xlsx": "^0.14.0"
+  }
+}

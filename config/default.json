@@ -1,0 +1,11 @@
+{
+	"dbConfig": {
+		"host": "localhost",
+		"port": 27017,
+		"dbName": "interview_challenge"
+	},
+	"rt_rules": {
+		"date": 5,
+		"amount": 20
+	}
+}

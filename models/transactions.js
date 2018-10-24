@@ -282,7 +282,8 @@ var getNextEstimate = function (transactions) {
 	let o = {};
 	o.next_amt = getNextAmountEstimate(transactions);
 	o.next_date = getNextDateEstimate(transactions);
-	o.transactions = getTransactionsList(transactions);
+	o.transactions = transactions;
+	// o.transactions = getTransactionsList(transactions);
 	return o;
 }
 

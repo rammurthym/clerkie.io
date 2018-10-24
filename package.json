@@ -28,6 +28,7 @@
     "connect-timeout": "^1.9.0",
     "date-diff": "^0.2.1",
     "express": "^4.16.4",
+    "joi": "^14.0.1",
     "mongodb": "^3.1.8",
     "underscore": "^1.9.1",
     "xlsx": "^0.14.0"
